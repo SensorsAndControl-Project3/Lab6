@@ -1,7 +1,8 @@
 %% new code for shape detection added in centre of shape
-
+clc
 clear all
-
+close all
+clear
 %% best code
 
 Image = imread('P1130323.jpg');
@@ -36,8 +37,9 @@ figure(1);
 imshowpair(Original_Image,Image,'montage')
 title('Image                                      Edge Detection Filter');
 
-imwrite(Image, 'image.png');
-Processed_Image = imread('image.png');
+% imwrite(Image, 'image.png');
+% Processed_Image = imread('image.png');
+Processed_Image = Image;
 BW0 = rgb2gray(Processed_Image);
 % sizeImage = size(BW0)
 BW1 = false(size(1),size(2));
@@ -62,7 +64,7 @@ for x = 1:4
     BW3 = bwpropfilt(BW2,'area',1);
     figure;
     imshow(BW3)
-    title('Objects with the Largest Area')
+    title(['Shape: ', num2str(x)])
     hold on
     
     s = regionprops(BW3,'centroid');
@@ -93,7 +95,7 @@ for x = 1:4
 end
 
 for x=1:4
-    display(['Centre of shape ',num2str(x), ' is (', num2str(Centroids(x,1)), ',',num2str(Centroids(x,2)), ')'])
+    display(['Centre of Shape: ',num2str(x), ' is (', num2str(Centroids(x,1)), ',',num2str(Centroids(x,2)), ')'])
 end
 
 % BW2 = bwpropfilt(BW1,'perimeter',1);
