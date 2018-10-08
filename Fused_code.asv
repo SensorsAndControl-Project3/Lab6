@@ -1,0 +1,123 @@
+%% new code for shape detection added in centre of shape
+clc
+clear all
+close all
+clear
+%% best code
+
+Image1 = imread('P1130323.jpg');
+Image2 = imread('P1130325.jpg');
+
+ImageArray = {Image1,Image2};
+sizeArray = size(ImageArray);
+for imageNumber = 1:(sizeArray(2))
+    Image = ImageArray{imageNumber};
+    Original_Image = Image;
+    try clear size; end
+    size = size(Image);
+    
+    for i = 1 : size(1)
+        for j = 1 : size(2)
+            x = 0;
+            if Image(i,j,1) >= 0 && Image(i,j,1) <= 80
+                if Image(i,j,2) >= 0 && Image(i,j,2) <= 80
+                    if Image(i,j,3) >= 0 && Image(i,j,3) <= 180
+                        Image(i,j,1) = 255;
+                        Image(i,j,2) = 255;
+                        Image(i,j,3) = 255;
+                        x = 1;
+                    end
+                end
+            end
+            if x == 0
+                Image(i,j,1) = 0;
+                Image(i,j,2) = 0;
+                Image(i,j,3) = 0;
+            end
+        end
+    end
+    
+    BW = rgb2gray(Image);
+    ED = edge(BW,'roberts',0);
+    
+    figure;
+    imshowpair(Original_Image,Image,'montage')
+    title('Image                                      Edge Detection Filter');
+    
+    BW0 = rgb2gray(Image);
+    BW1 = false(size(1),size(2));
+    
+    for i = 1:size(1)
+        for j = 1:size(2)
+            
+            if BW0(i,j) == 255
+                BW1(i,j) = true;
+            end
+            
+        end
+    end
+    
+    BW2 = BW1;
+    
+    Add = false(size(1),size(2));
+    
+    Centroids = zeros(4,2);
+    
+    for x = 1:4
+        BW3 = bwpropfilt(BW2,'area',1);
+        figure;
+        imshow(BW3)
+        title(['Shape: ', num2str(x)])
+        hold on
+        s = regionprops(BW3,'centroid');
+        centroids = cat(1, s.Centroid);
+        plot(centroids(:,1),centroids(:,2), 'b*')
+        
+        st = regionprops(BW3, 'BoundingBox', 'Area' );
+        [maxArea, indexOfMax] = max([st.Area]);
+        rectangle('Position',[st(indexOfMax).BoundingBox(1),st(indexOfMax).BoundingBox(2),st(indexOfMax).BoundingBox(3),st(indexOfMax).BoundingBox(4)], 'EdgeColor','r','LineWidth',2 )
+        
+        st = regionprops(BW3,'Orientation','MajorAxisLength');
+        a = s.Centroid(1) + st.MajorAxisLength * cosd(st.Orientation);
+        b = s.Centroid(2) - st.MajorAxisLength * sind(st.Orientation);
+        %     line([c(1) a],[c(2) b]);
+        
+        st = regionprops(BW3,'Extrema');
+        line([st.Extrema(7),st.Extrema(4)],[st.Extrema(15),st.Extrema(12)], 'Color', 'red', 'Linestyle', '--');
+        plot(st.Extrema(4),st.Extrema(12), 'r*')
+        plot(st.Extrema(7),st.Extrema(15), 'g*')
+        
+        hold off
+        
+        Centroids(x,1) = round(centroids(:,1));
+        Centroids(x,2) = round(centroids(:,2));
+        
+        for i = 1:size(1)
+            for j = 1:size(2)
+                if BW3(i,j) == true
+                    Add(i,j) = true;
+                end
+            end
+        end
+        
+        BW2 = false(size(1),size(2));
+        for i = 1:size(1)
+            for j = 1:size(2)
+                if BW1(i,j) == true && Add(i,j) == false
+                    BW2(i,j) = true;
+                end
+            end
+        end
+    end
+    
+        if imageNumber == 1
+            Centroids2 = Centroids;
+        elseif imageNumber == 2
+            
+        end
+    
+end
+
+for x=1:8
+    display(['Centre of Shape: ',num2str(x), ' is (', num2str(Centroids(x,1)), ',',num2str(Centroids(x,2)), ')'])
+end

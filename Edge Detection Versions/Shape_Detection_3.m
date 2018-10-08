@@ -5,14 +5,14 @@ close all
 clear
 %% best code
 
-% Image = imread('P1130323.jpg');
+Image = imread('P1130323.jpg');
 % Image = imread('P1130324.jpg');
 % Image = imread('P1130325.jpg');
 % Image = imread('P1130326.jpg');
 
 % Image = imread('T-Puzzle_Pictures/T_Puzzle_Cane.jpg');
 % Image = imread('T-Puzzle_Pictures/T_Puzzle_Funiculaire.jpg');
-Image = imread('T-Puzzle_Pictures/T_Puzzle_Golf_Bag.jpg');
+% Image = imread('T-Puzzle_Pictures/T_Puzzle_Golf_Bag.jpg');
 % Image = imread('T-Puzzle_Pictures/T_Puzzle_Harpoon.jpg');
 % Image = imread('T-Puzzle_Pictures/T_Puzzle_Hockey_Stick.jpg');
 % Image = imread('T-Puzzle_Pictures/T_Puzzle_Mountains.jpg');
