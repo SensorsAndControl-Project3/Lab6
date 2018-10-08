@@ -83,7 +83,6 @@ end
 % imshow(BW2)
 % title('Objects with the Largest Area')
 
-
 % BW2 = bwpropfilt(BW1,'EulerNumber',[1 1]);
 % figure
 % imshow(BW2)
