@@ -132,23 +132,24 @@ end
 
 xy_left = [Centroids(1,1),Centroids(1,2)]
 xy_right = [Centroids(5,1),Centroids(5,2)]
-% Principal point:       
-cc = [ 959.50000   539.50000 ];
+
+% before auto calib
 % Focal Length:          
-fc = [ 3213.98575   2690.22368 ];
+fc = [ 920.2548   923.2314 ]
+% Principal point:       
+cc = [ 319.50000   239.50000 ]
+
 
 focal = fc;
 fx = focal(1);
 fy = focal(2);
 PriciplePoint = cc
-PPx = PriciplePoint(1);
-PPz = PriciplePoint(2);
 xy_left = xy_left - PriciplePoint
 xy_right = xy_right - PriciplePoint
-Bx = 5;
+Bx = 20;
 dx = xy_left(1) - xy_right(1)
 dz = xy_left(2) - xy_right(2)
-
+%from the left image
 Z = (Bx * fx) / (dx)
 X = (Z * xy_left(1)) / (fx)
 Y = (Z * xy_left(2)) / (fy)
