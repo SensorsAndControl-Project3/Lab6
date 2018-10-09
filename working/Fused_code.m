@@ -5,8 +5,8 @@ close all
 clear
 %% best code
 
-Image1 = imread('P1130323.jpg');
-Image2 = imread('P1130325.jpg');
+Image1 = imread('1.jpg');
+Image2 = imread('2.jpg');
 
 Centroids = zeros(8,2);
 
@@ -127,3 +127,28 @@ end
 for x=1:8
     display(['Centre of Shape: ',num2str(x), ' is (', num2str(Centroids(x,1)), ',',num2str(Centroids(x,2)), ')'])
 end
+
+%% finding distance away
+
+xy_left = [Centroids(1,1),Centroids(1,2)]
+xy_right = [Centroids(5,1),Centroids(5,2)]
+% Principal point:       
+cc = [ 959.50000   539.50000 ];
+% Focal Length:          
+fc = [ 3213.98575   2690.22368 ];
+
+focal = fc;
+fx = focal(1);
+fy = focal(2);
+PriciplePoint = cc
+PPx = PriciplePoint(1);
+PPz = PriciplePoint(2);
+xy_left = xy_left - PriciplePoint
+xy_right = xy_right - PriciplePoint
+Bx = 5;
+dx = xy_left(1) - xy_right(1)
+dz = xy_left(2) - xy_right(2)
+
+Z = (Bx * fx) / (dx)
+X = (Z * xy_left(1)) / (fx)
+Y = (Z * xy_left(2)) / (fy)

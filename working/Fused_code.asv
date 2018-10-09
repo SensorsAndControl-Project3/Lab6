@@ -5,8 +5,10 @@ close all
 clear
 %% best code
 
-Image1 = imread('P1130323.jpg');
-Image2 = imread('P1130325.jpg');
+Image1 = imread('.jpg');
+Image2 = imread('6.jpg');
+
+Centroids = zeros(8,2);
 
 ImageArray = {Image1,Image2};
 sizeArray = size(ImageArray);
@@ -61,13 +63,19 @@ for imageNumber = 1:(sizeArray(2))
     
     Add = false(size(1),size(2));
     
-    Centroids = zeros(4,2);
-    
     for x = 1:4
         BW3 = bwpropfilt(BW2,'area',1);
         figure;
         imshow(BW3)
-        title(['Shape: ', num2str(x)])
+        
+        if imageNumber == 1
+            u = x;
+        elseif imageNumber == 2
+            u = x+4;
+        end
+        
+        title(['Shape: ', num2str(u)])
+        
         hold on
         s = regionprops(BW3,'centroid');
         centroids = cat(1, s.Centroid);
@@ -88,9 +96,14 @@ for imageNumber = 1:(sizeArray(2))
         plot(st.Extrema(7),st.Extrema(15), 'g*')
         
         hold off
-        
-        Centroids(x,1) = round(centroids(:,1));
-        Centroids(x,2) = round(centroids(:,2));
+        if imageNumber == 1
+            Centroids(x,1) = round(centroids(:,1));
+            Centroids(x,2) = round(centroids(:,2));
+        elseif imageNumber == 2
+            centroidsNumber = x+4;
+            Centroids(centroidsNumber,1) = round(centroids(:,1));
+            Centroids(centroidsNumber,2) = round(centroids(:,2));
+        end
         
         for i = 1:size(1)
             for j = 1:size(2)
@@ -109,15 +122,33 @@ for imageNumber = 1:(sizeArray(2))
             end
         end
     end
-    
-        if imageNumber == 1
-            Centroids2 = Centroids;
-        elseif imageNumber == 2
-            
-        end
-    
 end
 
 for x=1:8
     display(['Centre of Shape: ',num2str(x), ' is (', num2str(Centroids(x,1)), ',',num2str(Centroids(x,2)), ')'])
 end
+
+%% finding distance away
+
+xy_left = [Centroids(1,1),Centroids(1,2)]
+xy_right = [Centroids(5,1),Centroids(5,2)]
+% Principal point:       
+cc = [ 959.50000   539.50000 ];
+% Focal Length:          
+fc = [ 3213.98575   2690.22368 ];
+
+focal = fc;
+fx = focal(1);
+fz = focal(2);
+% use this in the code 
+PriciplePoint = cc
+PPx = PriciplePoint(1);
+PPz = PriciplePoint(2);
+xy_left = xy_left - PriciplePoint
+xy_right = xy_right - PriciplePoint
+Bx = 5;
+dx = xy_left(1) - xy_right(1)
+dz = xy_left(2) - xy_right(2)
+
+Z = (Bx * fx) / (dx)
+X = (Z * xy_left(1)) / (fx)
