@@ -5,8 +5,8 @@ close all
 clear
 %% best code
 
-Image1 = imread('4.jpg');
-Image2 = imread('3.jpg');
+Image1 = imread('angletest7.jpg');
+Image2 = imread('angletest7.jpg');
 
 Centroids = zeros(2,2);
 
