@@ -5,8 +5,8 @@ close all
 clear
 %% best code
 
-Image1 = imread('.jpg');
-Image2 = imread('6.jpg');
+Image1 = imread('P1130323.jpg');
+Image2 = imread('P1130325.jpg');
 
 Centroids = zeros(8,2);
 
@@ -128,27 +128,44 @@ for x=1:8
     display(['Centre of Shape: ',num2str(x), ' is (', num2str(Centroids(x,1)), ',',num2str(Centroids(x,2)), ')'])
 end
 
-%% finding distance away
+ShapeCoordinates = zeros(3,4);
 
-xy_left = [Centroids(1,1),Centroids(1,2)]
-xy_right = [Centroids(5,1),Centroids(5,2)]
-% Principal point:       
-cc = [ 959.50000   539.50000 ];
+%% finding distance away
+for c1 = 1:4
+xy_left = [Centroids(c1,1),Centroids(c1,2)];
+c2 = c1+4;
+xy_right = [Centroids(c2,1),Centroids(c2,2)];
+
+% before auto calib
 % Focal Length:          
-fc = [ 3213.98575   2690.22368 ];
+fc = [ 920.2548   923.2314 ];
+% Principal point:       
+cc = [ 319.50000   239.50000 ];
+
 
 focal = fc;
 fx = focal(1);
-fz = focal(2);
-% use this in the code 
-PriciplePoint = cc
-PPx = PriciplePoint(1);
-PPz = PriciplePoint(2);
-xy_left = xy_left - PriciplePoint
-xy_right = xy_right - PriciplePoint
-Bx = 5;
-dx = xy_left(1) - xy_right(1)
-dz = xy_left(2) - xy_right(2)
+fy = focal(2);
+PriciplePoint = cc;
+xy_left = xy_left - PriciplePoint;
+xy_right = xy_right - PriciplePoint;
+Bx = 20;
+dx = xy_left(1) - xy_right(1);
+dz = xy_left(2) - xy_right(2);
+%from the left image
 
-Z = (Bx * fx) / (dx)
-X = (Z * xy_left(1)) / (fx)
+Z = (Bx * fx) / (dx);
+X = (Z * xy_left(1)) / (fx);
+Y = (Z * xy_left(2)) / (fy);
+
+X = round(X);
+Y = round(Y);
+Z = round(Z);
+
+ShapeCoordinates(1,c1) = X;
+ShapeCoordinates(2,c1) = Y;
+ShapeCoordinates(3,c1) = Z;
+
+display(['Distance to Shape: ',num2str(c1), ' is (x = ', num2str(X), ',y = ',num2str(Y), ',Z = ',num2str(Z), ')'])
+
+end
