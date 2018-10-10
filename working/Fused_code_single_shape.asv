@@ -5,8 +5,8 @@ close all
 clear
 %% best code
 
-Image1 = imread('4.jpg');
-Image2 = imread('3.jpg');
+Image1 = imread('P1130325.jpg');
+Image2 = imread('P1130325.jpg');
 
 Centroids = zeros(2,2);
 
@@ -85,8 +85,9 @@ for imageNumber = 1:(sizeArray(2))
     line([st.Extrema(7),st.Extrema(4)],[st.Extrema(15),st.Extrema(12)], 'Color', 'red', 'Linestyle', '--');
     plot(st.Extrema(4),st.Extrema(12), 'r*')
     plot(st.Extrema(7),st.Extrema(15), 'g*')
-    point_right = [st.Extrema(4) , st.Extrema(12)];
-    point_left = [st.Extrema(7) , st.Extrema(15)];
+    point_right = [st.Extrema(4) , st.Extrema(12)]
+    point_left = [st.Extrema(7) , st.Extrema(15)]
+%     point_left = st.Exterma(7);
     
     hold off
     
@@ -151,15 +152,7 @@ else
     string = 'elevation';
     angle;
 end
-% angle = round(angle)
-display(['this is the angle of ', string ,' form rise over run at angle = ', num2str(angle)])
+display(['this is the angle of, string, angle])
 %   this is the angle given from the code above
-if OrientationFromAboveAngle < 0
-    string = 'depression';
-    OrientationFromAboveAngle = -1 * OrientationFromAboveAngle;
-else
-    string = 'elevation';
-    OrientationFromAboveAngle;
-end
-display(['this is the angle of ', string ,'from the at.Orination at angle = ', num2str(OrientationFromAboveAngle)])
+OrientationFromAboveAngle
 
