@@ -159,11 +159,11 @@ joint_srv.call(joint_msg)
 
 %%
 cart_srv = rossvcclient('dobot_magician/cart_pos');
-cart_msg = rosmessage(cart_srv); 
+cart_msg = rosmessage(cart_srv)
 
-cart_msg.Pos.X = 0.2;
-cart_msg.Pos.Y = 0.0;
-cart_msg.Pos.Z = 0.07;
+cart_msg.Pos.X = 0;
+cart_msg.Pos.Y = 0;
+cart_msg.Pos.Z = 0;
 
 cart_srv.call(cart_msg)
 

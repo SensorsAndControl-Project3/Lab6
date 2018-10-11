@@ -2,7 +2,7 @@
 
 % if 1 run initialisation
 % else don't run initialisation
-Initialise = 0
+Initialise = 1
 clf
 if Initialise == 1
     close all
@@ -36,14 +36,14 @@ if Initialise == 1
     pump_srv = rossvcclient('/dobot_magician/pump');
     pump_msg = rosmessage(pump_srv);
     pump_msg.Pump = 0;
-    pump_srv.call(pump_msg);
+    try pump_srv.call(pump_msg); end
     
-    % Initialise Pose
-    joint_msg.JointAngles(1) = 0;
-    joint_msg.JointAngles(2) = 0;
-    joint_msg.JointAngles(3) = 0;
-    joint_msg.JointAngles(4) = 0;
-    joint_srv.call(joint_msg);
+%     % Initialise Pose
+%     joint_msg.JointAngles(1) = 0;
+%     joint_msg.JointAngles(2) = 0;
+%     joint_msg.JointAngles(3) = 0;
+%     joint_msg.JointAngles(4) = 0;
+%     joint_srv.call(joint_msg);
     
 end
 
@@ -93,6 +93,13 @@ DoBotCalcModel.base = baseLocation;
 workspace = [-0.5 0.5 -0.5 0.5 -0.2 0.5];
 scale = 0.5;
 
+q = readJointAnglesSetup()
+angles = poseDoBotFunct(q)
+trans = DoBotVisuModel.fkine(angles)
+xyz = trans(1:3,4)
+% angles = poseDoBotFunct(q)
+DoBotVisuModel.teach(angles)
+
 % Plotting the Visual Model
 figure(1)
 DoBotVisuModel.plot(zeros(1,DoBotVisuModel.n),'workspace',workspace,'scale',scale, 'noarrow');
@@ -101,9 +108,11 @@ DoBotVisuModel.teach
 % Specifying the coordinates that the robot arm need to move to
 % Coordinates = [-0.08,0.12,-0.2;-0.2090,0.0000,0.1930;0.00,-0.3,0.05];
 % Coordinates = [-0.08,0.05,-0.1;-0.2090,0.0000,0.1930;0.00,-0.3,0.05];
-Coordinates = [-0.161,0.133,0.056;-0.000,-0.187,0.011;-0.212,-0.104,0.062;-0.180,0.139,0.139;-0.209,-0.000,0.193;-0.209,-0.035,-0.047];
+% Coordinates = [-0.161,0.133,0.056;-0.000,-0.187,0.011;-0.212,-0.104,0.062;-0.180,0.139,0.139;-0.209,-0.000,0.193;-0.209,-0.035,-0.047];
 % Coordinates = [-0.209,-0.035,-0.047];
-PumpOperation = [1,0,1,0,1,0];
+% PumpOperation = [1,0,1,0,1,0];
+% Coordinates = [-0.2090,0.0000,0.1930]
+% Coordinates = [-0.212,0.0000,0.142]
 
 % Creating a loop depending on the number of coordinates that the robot
 % must move to as specified above
@@ -115,7 +124,7 @@ for x = 1:sizeof(1)
 %     pause(1);
 %     image_h = imshow(readImage(imageSub.LatestMessage));
     
-    pump(PumpOperation(x));
+    try pump(PumpOperation(x)); end 
     
     % the Coordinates that the robot is moveing to
     newCoordinates = Coordinates(x,:)
