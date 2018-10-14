@@ -2,7 +2,7 @@
 
 % if 1 run initialisation
 % else don't run initialisation
-Initialise = 0
+Initialise = 1
 clf
 if Initialise == 1
     close all
@@ -134,7 +134,7 @@ DoBotVisuModel.teach
 %     -0.231,-0.0000,0.1426;
 %     -0.231,-0.0000,0.1626]
 
-Coordinates = [-0.231,-0.0000,-0.1500];
+Coordinates = [-0.231,-0.0000,-0.200];
 
 % Creating a loop depending on the number of coordinates that the robot
 % must move to as specified above

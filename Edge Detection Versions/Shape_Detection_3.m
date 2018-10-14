@@ -5,7 +5,7 @@ close all
 clear
 %% best code
 
-Image = imread('P1130323.jpg');
+Image = imread('P1130323.JPG');
 % Image = imread('P1130324.jpg');
 % Image = imread('P1130325.jpg');
 % Image = imread('P1130326.jpg');

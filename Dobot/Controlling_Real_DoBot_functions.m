@@ -112,7 +112,7 @@ pump_srv = rossvcclient('/dobot_magician/pump');
 %joint_msg = rosmessage('dobot_magician/SetPosAngRequest');
 pump_msg = rosmessage(pump_srv);
 
-pump_msg.Pump = 0;
+pump_msg.Pump = 01;
 
 pump_srv.call(pump_msg);
 
