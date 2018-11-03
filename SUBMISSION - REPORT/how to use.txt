@@ -1,0 +1,6 @@
+how to use
+connect to wifi rounter on the dobot network
+start ros core on dobot
+init the dobot
+init the camera
+run the matlab code
